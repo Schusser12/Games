@@ -1,38 +1,56 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+using namespace std;
 
 int main() {
+    string choices[] = { "Rock", "Paper", "Scissors" };
+    int numOfChoices = sizeof(choices) / sizeof(choices[0]);
+
+    // Generate a random number between 0 and 2
+    srand(static_cast<unsigned int>(time(0)));
+
     char playAgain;
-
     do {
-        std::srand(static_cast<unsigned int>(std::time(nullptr)));
-        int secretNumber = std::rand() % 100 + 1;
+        int computerChoice = rand() % numOfChoices;
 
-        int guess;
-        int attempts = 0;
-        bool guessed = false;
+        int playerChoice;
 
-        std::cout << "*** Number Guessing Game ***\n\n";
+        cout << "*** Rock, Paper, Scissors ***\n\n";
 
-        while (!guessed) {
-            std::cout << "Enter your guess (1-100): ";
-            std::cin >> guess;
+        // Get the player's choice
+        cout << "Choose your move:\n";
+        cout << "1. Rock\n";
+        cout << "2. Paper\n";
+        cout << "3. Scissors\n";
+        cin >> playerChoice;
 
-            attempts++;
+        playerChoice--; // Adjusting for 0-based indexing
 
-            if (guess == secretNumber) {
-                std::cout << "Congratulations! You guessed the number in " << attempts << " attempts.\n";
-                guessed = true;
-            } else if (guess < secretNumber) {
-                std::cout << "Too low! Try again.\n";
-            } else {
-                std::cout << "Too high! Try again.\n";
+        // Validate the player's choice
+        if (playerChoice >= 0 && playerChoice < numOfChoices) {
+            cout << "You chose: " << choices[playerChoice] << "\n";
+            cout << "The computer chose: " << choices[computerChoice] << "\n\n";
+
+            // Determine the winner
+            int result = (playerChoice - computerChoice + numOfChoices) % numOfChoices;
+
+            if (result == 0) {
+                cout << "It's a tie!\n";
+            }
+            else if (result <= numOfChoices / 2) {
+                cout << "Congratulations! You win!\n";
+            }
+            else {
+                cout << "Sorry! You lose!\n";
             }
         }
+        else {
+            cout << "Invalid choice.\n";
+        }
 
-        std::cout << "Do you want to play again? (Y/N): ";
-        std::cin >> playAgain;
+        cout << "Do you want to play again? (Y/N): ";
+        cin >> playAgain;
 
         playAgain = tolower(playAgain);
 
